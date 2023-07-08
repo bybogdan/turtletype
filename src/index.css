@@ -22,13 +22,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #000;
-    background-color: #ffffff;
-  }
-}
-
 .idle {
   opacity: 0.5;
 }
@@ -42,24 +35,28 @@
   color: red;
 }
 
-/* .current {
-  position: relative;
+.space {
+  border-bottom: 1px solid transparent;
 }
 
-.current::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: '';
-  margin-top: 2px;
-  width: 1px;
-  height: 14px;
-  background: yellow;
-  display: inline-block;
-  animation-name: cursor;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-} */
+.space-correct {
+  border-color: white;
+}
+
+.space-wrong {
+  border-color: red;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #000;
+    background-color: #ffffff;
+  }
+
+  .space-correct {
+    border-color: black;
+  }
+}
 
 @keyframes cursor {
   0% {

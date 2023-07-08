@@ -4,21 +4,14 @@ import Balancer from 'react-wrap-balancer'
 const mock =
   'because the perception of color is an important aspect of human life, different colors have been associated with emotions, activity, and nationality. names of color regions in different cultures can have different, sometimes overlapping areas. in visual arts, color theory is used to govern the use of colors in an aesthetically pleasing and harmonious way.'
 
-const lengthWithoutSpaces = mock.split(' ').join('').length
-let lengthWithoutSpacesDiff = lengthWithoutSpaces
-
 type ResType = ('correct' | 'wrong' | 'idle')[]
 
-const preparedMock = mock.split(' ').map((word, wordIndex) => {
-  const letters = word.split('')
-  return letters.map((l) => {
-    const idx = lengthWithoutSpaces - lengthWithoutSpacesDiff
-    lengthWithoutSpacesDiff -= 1
-    return {
-      value: l,
-      id: wordIndex === 0 ? idx : idx + wordIndex, // wordIndex for space
-    }
-  })
+const preparedMock = mock.split('').map((char, wordIndex) => {
+  return {
+    value: char,
+    id: wordIndex,
+    isSpace: char === ' ',
+  }
 })
 
 export const Editor = () => {
@@ -45,17 +38,17 @@ export const Editor = () => {
       setIsFinished(Date.now())
     }
 
-    const currentNode = document.querySelector('.current')
-    currentNode?.classList.remove('current')
     const lNode = document.getElementById(`l-${idx}`)
     lNode?.classList.remove('idle')
 
-    if (value[idx] === mock[idx]) {
-      lNode?.classList.add('correct')
-      res.current[idx] = 'correct'
+    const isSpace = lNode?.classList.contains('space')
+    const isCorrect = value[idx] === mock[idx]
+
+    if (isSpace) {
+      lNode?.classList.add(isCorrect ? 'space-correct' : 'space-wrong')
     } else {
-      lNode?.classList.add('wrong', 'current')
-      res.current[idx] = 'wrong'
+      lNode?.classList.add(isCorrect ? 'correct' : 'wrong')
+      res.current[idx] = isCorrect ? 'correct' : 'wrong'
     }
   }
 
@@ -88,20 +81,15 @@ export const Editor = () => {
       <h1 className="text-3xl">turtletype</h1>
       <p>
         <Balancer>
-          {preparedMock.map((w, wordI) => (
-            <span key={`${w.toString()}-${wordI}`} id={`w-${wordI}`}>
-              {w.map((l, lIndex) => (
-                <span
-                  key={l.id.toString()}
-                  id={`l-${l.id}`}
-                  className={`idle ${
-                    lIndex === 0 && wordI === 0 ? 'current' : ''
-                  }`}
-                >
-                  {l.value}
-                </span>
-              ))}
-              <span className="space"> </span>
+          {preparedMock.map((l, lIndex) => (
+            <span
+              key={l.id.toString()}
+              id={`l-${l.id}`}
+              className={`idle ${l.isSpace ? 'space' : ''} ${
+                lIndex === 0 ? 'current' : ''
+              }`}
+            >
+              {l.value}
             </span>
           ))}
         </Balancer>
