@@ -23,9 +23,9 @@ const preparedMock = mock.split(' ').map((word, wordIndex) => {
 
 export const Editor = () => {
   const res = useRef<ResType>(new Array(mock.length).fill('idle') as ResType)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [userValue, setUserValue] = useState('')
-  const [isDisabledInput, setIsDisabledInput] = useState(false)
   const [isStarted, setIsStarted] = useState<number | null>(null)
   const [isFinished, setIsFinished] = useState<number | null>(null)
 
@@ -43,18 +43,18 @@ export const Editor = () => {
     // finish
     if (idx >= mock.length - 1) {
       setIsFinished(Date.now())
-      setIsDisabledInput(true)
     }
 
+    const currentNode = document.querySelector('.current')
+    currentNode?.classList.remove('current')
+    const lNode = document.getElementById(`l-${idx}`)
+    lNode?.classList.remove('idle')
+
     if (value[idx] === mock[idx]) {
-      const lNode = document.getElementById(`l-${idx}`)
-      lNode?.classList.remove('idle')
       lNode?.classList.add('correct')
       res.current[idx] = 'correct'
     } else {
-      const lNode = document.getElementById(`l-${idx}`)
-      lNode?.classList.remove('idle')
-      lNode?.classList.add('wrong')
+      lNode?.classList.add('wrong', 'current')
       res.current[idx] = 'wrong'
     }
   }
@@ -79,39 +79,43 @@ export const Editor = () => {
     }
   }
 
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
   return (
-    <div className="flex flex-col gap-20">
-      Editor
-      <label htmlFor="editor">
-        <p>
-          <Balancer>
-            {preparedMock.map((w, wordI) => (
-              <span key={`${w.toString()}-${wordI}`} id={`w-${wordI}`}>
-                {w.map((l, lIndex) => (
-                  <span
-                    key={l.id.toString()}
-                    id={`l-${l.id}`}
-                    className={`idle ${
-                      lIndex === 0 && wordI === 0 ? 'current' : ''
-                    }`}
-                  >
-                    {l.value}
-                  </span>
-                ))}{' '}
-              </span>
-            ))}
-          </Balancer>
-        </p>
-      </label>
+    <label htmlFor="editor" className="flex flex-col gap-20 h-screen p-10">
+      <h1 className="text-3xl">turtletype</h1>
+      <p>
+        <Balancer>
+          {preparedMock.map((w, wordI) => (
+            <span key={`${w.toString()}-${wordI}`} id={`w-${wordI}`}>
+              {w.map((l, lIndex) => (
+                <span
+                  key={l.id.toString()}
+                  id={`l-${l.id}`}
+                  className={`idle ${
+                    lIndex === 0 && wordI === 0 ? 'current' : ''
+                  }`}
+                >
+                  {l.value}
+                </span>
+              ))}
+              <span className="space"> </span>
+            </span>
+          ))}
+        </Balancer>
+      </p>
       <input
         id="editor"
-        disabled={isDisabledInput}
+        disabled={!!isFinished}
         value={userValue}
         onChange={handleInput}
         onKeyDown={handleKeyDown}
         type="text"
         className="opacity-0 w-0 h-0 absolute"
+        ref={inputRef}
       />
-    </div>
+    </label>
   )
 }

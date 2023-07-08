@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+  padding: 0;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -38,7 +42,14 @@
   color: red;
 }
 
+/* .current {
+  position: relative;
+}
+
 .current::before {
+  position: absolute;
+  top: 0;
+  left: 0;
   content: '';
   margin-top: 2px;
   width: 1px;
@@ -48,7 +59,7 @@
   animation-name: cursor;
   animation-duration: 1s;
   animation-iteration-count: infinite;
-}
+} */
 
 @keyframes cursor {
   0% {
