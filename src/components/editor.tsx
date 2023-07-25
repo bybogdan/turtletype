@@ -70,21 +70,21 @@ export const Editor = () => {
         <div
           className={`${
             t.visible ? 'animate-enter' : 'animate-leave'
-          } p-4 max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          } p-4 max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5 mb-10`}
         >
           <div className="flex-1 w-0 text-start	">
-            <p className="text-sm font-medium text-gray-900">Your results:</p>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className=" font-medium text-gray-900">Your results:</p>
+            <p className="mt-1  text-gray-500">
               words per minute: <b className="text-black">{wpm}</b>
             </p>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1  text-gray-500">
               accuracy: <b className="text-black">{accuracy}</b>
             </p>
           </div>
           <div className="self-center">
             <button
               type="button"
-              className="mt-2 inline-block rounded bg-neutral-800 px-4 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
+              className="mt-2 inline-block rounded bg-neutral-800 px-4 pb-2 pt-2.5 font-medium leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
               onClick={() => window.location.reload()}
             >
               Try again 🔄
@@ -110,7 +110,9 @@ export const Editor = () => {
   return (
     <label
       htmlFor="editor"
-      className="flex flex-col justify-between gap-20 h-screen p-10"
+      className={`flex flex-col justify-between gap-20 h-screen p-10 ${
+        isFinished ? 'opacity-20' : ''
+      }`}
     >
       <h1 className="text-5xl">turtletype</h1>
       <p className="text-3xl tracking-wider">

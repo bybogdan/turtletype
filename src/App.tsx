@@ -7,6 +7,7 @@ function App() {
   return (
     <>
       <Toaster
+        position="bottom-center"
         toastOptions={{
           custom: {
             duration: Infinity,
