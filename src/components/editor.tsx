@@ -114,11 +114,22 @@ export const Editor = () => {
   return (
     <label
       htmlFor="editor"
-      className={`flex flex-col justify-between gap-20 h-screen p-10 ${
+      className={`flex flex-col justify-between gap-20 h-screen p-10 select-none ${
         isFinished ? 'opacity-20' : ''
       }`}
     >
-      <h1 className="text-5xl">turtletype</h1>
+      <div className="flex items-center gap-4">
+        <h1 className="text-4xl text-left">turtletype</h1>
+
+        {/* TODO MAKE BUTTON LOOKS NICER */}
+        <button
+          type="button"
+          className="px-4 pb-2 pt-2.5 font-medium leading-normal rounded inline-block dark:border-white border-black border-solid	 border-2 dark:hover:bg-slate-900 hover:bg-slate-100"
+          onClick={() => window.location.reload()}
+        >
+          Change text 🔤
+        </button>
+      </div>
       <p className="text-3xl tracking-wider">
         <Balancer>
           {preparedMock.map((l, lIndex) => (
