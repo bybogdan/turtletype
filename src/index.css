@@ -53,6 +53,10 @@
     background-color: #ffffff;
   }
 
+  .idle {
+    opacity: 0.3;
+  }
+
   .space-correct {
     border-color: black;
   }
