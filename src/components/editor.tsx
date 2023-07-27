@@ -1,30 +1,34 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Balancer from 'react-wrap-balancer'
 import toast from 'react-hot-toast'
-
-const mock =
-  'because the perception of color is an important aspect of human life, different colors have been associated with emotions, activity, and nationality. names of color regions in different cultures can have different, sometimes overlapping areas. in visual arts, color theory is used to govern the use of colors in an aesthetically pleasing and harmonious way.'.replace(
-    /[,.]/g,
-    ''
-  )
+import { mocks } from '../mocks'
 
 type ResType = ('correct' | 'wrong' | 'idle')[]
 
-const preparedMock = mock.split('').map((char, wordIndex) => {
-  return {
-    value: char,
-    id: wordIndex,
-    isSpace: char === ' ',
-  }
-})
-
 export const Editor = () => {
+  const mock = useMemo(
+    () =>
+      mocks[Math.floor(Math.random() * mocks.length)]
+        .trim()
+        .toLowerCase()
+        .replace(/[,.:`]/g, ''),
+    []
+  )
+
   const res = useRef<ResType>(new Array(mock.length).fill('idle') as ResType)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [userValue, setUserValue] = useState('')
   const [isStarted, setIsStarted] = useState<number | null>(null)
   const [isFinished, setIsFinished] = useState<number | null>(null)
+
+  const preparedMock = mock.split('').map((char, wordIndex) => {
+    return {
+      value: char,
+      id: wordIndex,
+      isSpace: char === ' ',
+    }
+  })
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isStarted === null) {
