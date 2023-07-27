@@ -91,7 +91,7 @@ export const Editor = () => {
               className="mt-2 inline-block rounded bg-neutral-800 px-4 pb-2 pt-2.5 font-medium leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
               onClick={() => window.location.reload()}
             >
-              Try again 🔄
+              try again 🔄
             </button>
           </div>
         </div>
@@ -102,7 +102,7 @@ export const Editor = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
       e.preventDefault()
-      toast(`Backspace is not allowed, let it go 💃`)
+      toast(`backspace is not allowed, let it go 💃`)
       return
     }
   }
@@ -120,15 +120,17 @@ export const Editor = () => {
     >
       <div className="flex items-center gap-4">
         <h1 className="text-4xl text-left">turtletype</h1>
+        {/* ADD TURTLE ICON */}
 
-        {/* TODO MAKE BUTTON LOOKS NICER */}
-        <button
-          type="button"
-          className="px-4 pb-2 pt-2.5 font-medium leading-normal rounded inline-block dark:border-white border-black border-solid	 border-2 dark:hover:bg-slate-900 hover:bg-slate-100"
-          onClick={() => window.location.reload()}
-        >
-          Change text 🔤
-        </button>
+        {!isFinished ? (
+          <button
+            type="button"
+            className="mt-2 inline-block rounded bg-neutral-800 dark:bg-neutral-200 px-4 pb-2 pt-2.5 font-medium leading-normal text-neutral-50 dark:text-neutral-800 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 dark:hover:bg-neutral-300 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 dark:focus:bg-neutral-300 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 dark:active:bg-neutral-300 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]  dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2) vertical-align: top; text-decoration: inherit; text-wrap: balance;"
+            onClick={() => window.location.reload()}
+          >
+            change text 🔄
+          </button>
+        ) : null}
       </div>
       <p className="text-3xl tracking-wider">
         <Balancer>
