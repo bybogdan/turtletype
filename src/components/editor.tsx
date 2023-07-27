@@ -132,7 +132,7 @@ export const Editor = () => {
           </button>
         ) : null}
       </div>
-      <p className="text-3xl tracking-wider">
+      <p className="text-3xl tracking-widest">
         <Balancer>
           {preparedMock.map((l, lIndex) => (
             <span
