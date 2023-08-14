@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+body {
+  overscroll-behavior: none;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -36,7 +40,10 @@
 }
 
 .space {
-  border-bottom: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  display: inline-block;
+  width: 10px;
+  margin: 0 4px;
 }
 
 .space-correct {
@@ -63,6 +70,30 @@
 }
 
 @keyframes cursor {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor {
+  animation: cursor 1s infinite;
+  margin-right: -5px;
+}
+
+.cursor-hide {
+  opacity: 0;
+  margin-right: -5px;
+}
+
+@keyframes blink {
   0% {
     opacity: 0;
   }

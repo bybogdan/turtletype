@@ -19,10 +19,13 @@ export const Editor = () => {
 
   const res = useRef<ResType>(new Array(mock.length).fill('idle') as ResType)
   const inputRef = useRef<HTMLInputElement>(null)
+  const interval = useRef<number | null>(null)
 
   const [userValue, setUserValue] = useState('')
   const [isStarted, setIsStarted] = useState<number | null>(null)
   const [isFinished, setIsFinished] = useState<number | null>(null)
+  // [TODO] add settings to set up time
+  const [timeLeft, setTimeLeft] = useState(30)
 
   const preparedMock = mock.split('').map((char, wordIndex) => {
     return {
@@ -46,6 +49,7 @@ export const Editor = () => {
     // finish
     if (idx >= mock.length - 1) {
       setIsFinished(Date.now())
+      interval.current && clearInterval(interval.current)
     }
 
     const lNode = document.getElementById(`l-${idx}`)
@@ -63,14 +67,31 @@ export const Editor = () => {
   }
 
   useEffect(() => {
+    if (isStarted && !isFinished) {
+      interval.current = setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+
+      if (timeLeft === 0) {
+        setIsFinished(Date.now())
+        clearInterval(interval.current)
+      }
+
+      return () =>
+        interval.current ? clearInterval(interval.current) : undefined
+    }
+  }, [timeLeft, isStarted, isFinished])
+
+  useEffect(() => {
     if (isStarted && isFinished) {
       const time = isFinished - isStarted
 
-      const wpm = (mock.length / 5 / (time / 1000 / 60)).toFixed(0)
+      const wpm = (userValue.length / 5 / (time / 1000 / 60)).toFixed(0)
 
       const accuracy =
         (
-          (res.current.filter((v) => v === 'correct').length / mock.length) *
+          (res.current.filter((v) => v === 'correct').length /
+            userValue.length) *
           100
         ).toFixed(0) + '%'
 
@@ -120,13 +141,30 @@ export const Editor = () => {
               className="mt-2 inline-block rounded bg-neutral-800 px-4 pb-2 pt-2.5 font-medium leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
               onClick={() => window.location.reload()}
             >
-              try again 🔄
+              press enter to restart
             </button>
           </div>
         </div>
       ))
     }
   }, [isStarted, isFinished])
+
+  useEffect(() => {
+    if (!isFinished) {
+      return
+    }
+    // if click entry key reload window
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        window.location.reload()
+      }
+    }
+    window.addEventListener('keydown', listener)
+
+    return () => {
+      window.removeEventListener('keydown', listener)
+    }
+  }, [isFinished])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
@@ -147,9 +185,11 @@ export const Editor = () => {
         isFinished ? 'opacity-20' : ''
       }`}
     >
-      <div className="flex items-start gap-2">
-        <img src="/turtleIcon.png" alt="turtle" className="w-8 h-8" />
-        <h1 className="text-4xl text-left">turtletype</h1>
+      <div className="flex justify-between gap-2">
+        <div className="flex items-start gap-2">
+          <img src="/turtleIcon.png" alt="turtle" className="w-10 h-10" />
+          <h1 className="text-4xl text-left">turtletype</h1>
+        </div>
 
         {!isFinished ? (
           <button
@@ -157,12 +197,17 @@ export const Editor = () => {
             className="inline-block rounded bg-neutral-800 dark:bg-neutral-200 px-4 pb-2 pt-2.5 font-medium leading-normal text-neutral-50 dark:text-neutral-800 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 dark:hover:bg-neutral-300 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 dark:focus:bg-neutral-300 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 dark:active:bg-neutral-300 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]  dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2) vertical-align: top; text-decoration: inherit; text-wrap: balance;"
             onClick={() => window.location.reload()}
           >
-            change text 🔄
+            refresh text
           </button>
         ) : null}
       </div>
-      <p className="text-3xl tracking-widest">
+      <p className="text-3xl tracking-widest relative">
+        <span className="font-semibold text-green-600 block h-[36px] mb-2">
+          {isStarted && !isFinished ? timeLeft : ''}
+        </span>
+
         <Balancer>
+          <span className={`${!isStarted ? 'cursor' : 'cursor-hide'}`}>|</span>
           {preparedMock.map((l, lIndex) => (
             <span
               key={l.id.toString()}
