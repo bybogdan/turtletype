@@ -88,10 +88,10 @@ export const Editor = () => {
 
       const wpm = (userValue.length / 5 / (time / 1000 / 60)).toFixed(0)
 
+      const incorrectCount = res.current.filter((v) => v === 'wrong').length
       const accuracy =
         (
-          (res.current.filter((v) => v === 'correct').length /
-            userValue.length) *
+          ((userValue.length - incorrectCount) / userValue.length) *
           100
         ).toFixed(0) + '%'
 
